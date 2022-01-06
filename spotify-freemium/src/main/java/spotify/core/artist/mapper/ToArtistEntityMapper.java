@@ -12,8 +12,8 @@ public class ToArtistEntityMapper implements Mapper<Artist, ArtistEntity> {
     @Override
     public ArtistEntity map(final Artist artist) {
         final ArtistEntity artistEntity = new ArtistEntity();
-        artistEntity.setId(artistEntity.getId());
-        artistEntity.setName(artistEntity.getName());
+        artistEntity.setId(artist.getId());
+        artistEntity.setName(artist.getName());
         return artistEntity;
     }
 }
