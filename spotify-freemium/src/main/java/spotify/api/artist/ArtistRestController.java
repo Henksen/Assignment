@@ -27,5 +27,4 @@ public class ArtistRestController {
     public void deleteArtist(@RequestBody final DeleteArtistsRequestModel request) {
         artistService.deleteArtist(request.getId());
     }
-
 }

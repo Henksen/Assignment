@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import spotify.api.artist.model.CreateArtistsRequestModel;
 import spotify.api.artist.model.DeleteArtistsRequestModel;
 import spotify.api.song.model.CreateSongRequestModel;
+import spotify.api.song.model.DeleteSongRequestModel;
 import spotify.core.artist.Artist;
 import spotify.core.song.Song;
 
@@ -71,6 +72,17 @@ class ApplicationIT {
                 .build();
 
         sendPostRequest(request, "/api/songs")
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void when_delete_song_expect_200() throws Exception{
+        final DeleteSongRequestModel request = DeleteSongRequestModel.builder()
+                .id(SONG_ID)
+                .build();
+
+        sendDeleteRequest(request, "/api/songs")
                 .andExpect(status().isOk())
                 .andReturn();
     }
