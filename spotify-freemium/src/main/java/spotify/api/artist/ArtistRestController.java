@@ -25,9 +25,12 @@ public class ArtistRestController {
     private final ToArtistEntityMapper artistEntityMapper;
 
     @PostMapping
-    public void addSong(@RequestBody final CreateArtistsRequestModel request) {
-        final List<ArtistEntity> artistEntityList = request.getArtists().stream().map(artistEntityMapper::map).collect(Collectors.toList());
-        artistEntityList.stream().map(artistRepository::save);
+    public void addArtist(@RequestBody final CreateArtistsRequestModel request) {
+        final List<ArtistEntity> artistEntityList = request.getArtists()
+                .stream()
+                .map(artistEntityMapper::map)
+                .collect(Collectors.toList());
+        artistEntityList.stream().map(s -> artistRepository.save(s));
     }
 
 }
