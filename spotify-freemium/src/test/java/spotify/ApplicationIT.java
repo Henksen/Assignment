@@ -40,7 +40,7 @@ class ApplicationIT {
     @Test
     void when_create_artists_expect_200() throws Exception{
         final CreateArtistsRequestModel createArtistsRequestModel = CreateArtistsRequestModel.builder()
-                .artists(List.of(createArtist(20)))
+                .artists(List.of(createArtist(23)))
                 .build();
 
         sendPostRequest(createArtistsRequestModel, "/api/artists")

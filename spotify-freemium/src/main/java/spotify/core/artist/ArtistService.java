@@ -1,14 +1,12 @@
 package spotify.core.artist;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import spotify.core.artist.repo.ArtistEntity;
-import spotify.core.artist.repo.ArtistRepository;
 import spotify.core.artist.mapper.ToArtistEntityMapper;
+import spotify.core.artist.repo.ArtistRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -19,18 +17,12 @@ public class ArtistService {
     private final ToArtistEntityMapper artistEntityMapper;
 
     public void addArtists(final List<Artist> artists) {
-        final List<ArtistEntity> artistEntities = artists
-                .stream()
-                .map(artistEntityMapper::map)
-                .collect(Collectors.toList());
-        artistEntities
-                .forEach(artistEntity -> {
-                    if(artistRepository.existsById(artistEntity.getId())) {
-                        artistRepository.save(artistEntity);
+        artists
+                .forEach(artist -> {
+                    if(artistRepository.existsById(artist.getId())) {
+                        artistRepository.save(artistEntityMapper.map(artist));
                     }
                 });
-
-        artistRepository.saveAll(artistEntities);
     }
 
     public void deleteArtist(final Integer id) {
