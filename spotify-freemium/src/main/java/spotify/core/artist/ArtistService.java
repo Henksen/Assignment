@@ -23,6 +23,13 @@ public class ArtistService {
                 .stream()
                 .map(artistEntityMapper::map)
                 .collect(Collectors.toList());
+        artistEntities
+                .forEach(artistEntity -> {
+                    if(artistRepository.existsById(artistEntity.getId())) {
+                        artistRepository.save(artistEntity);
+                    }
+                });
+
         artistRepository.saveAll(artistEntities);
     }
 
