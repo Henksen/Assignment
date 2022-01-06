@@ -70,7 +70,7 @@ class ApplicationIT {
                 .songs(List.of(buildSong()))
                 .build();
 
-        sendDeleteRequest(request, "/api/songs")
+        sendPostRequest(request, "/api/songs")
                 .andExpect(status().isOk())
                 .andReturn();
     }
