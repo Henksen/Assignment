@@ -1,6 +1,7 @@
 package spotify;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import spotify.api.artist.model.CreateArtistsRequestModel;
+import spotify.api.artist.model.DeleteArtistsRequestModel;
 import spotify.core.artist.Artist;
 
 @ExtendWith(SpringExtension.class)
@@ -38,7 +40,7 @@ class ApplicationIT {
     @Test
     void when_create_artists_expect_200() throws Exception{
         final CreateArtistsRequestModel createArtistsRequestModel = CreateArtistsRequestModel.builder()
-                .artists(List.of(createArtist(999998), createArtist(999999)))
+                .artists(List.of(createArtist(999997)))
                 .build();
 
         sendPostRequest(createArtistsRequestModel, "/api/artists")
@@ -46,8 +48,23 @@ class ApplicationIT {
                 .andReturn();
     }
 
-    private Artist createArtist(final int number) {
-        return Artist.builder().id(number).name("testName" + number).build();
+    @Test
+    void when_delete_artist_expect_200() throws Exception{
+        final DeleteArtistsRequestModel deleteArtistsRequestModel = DeleteArtistsRequestModel.builder()
+                .id(999997)
+                .build();
+
+        sendDeleteRequest(deleteArtistsRequestModel, "/api/artists")
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    private Artist createArtist(final int id) {
+        return Artist.builder().id(id).name("testName" + id).build();
+    }
+
+    private ResultActions sendDeleteRequest(final DeleteArtistsRequestModel request, final String url) throws Exception {
+        return sendRequest(delete(url), toJson(objectMapper, request), new HttpHeaders());
     }
 
     private ResultActions sendPostRequest(final Object request, final String url) throws Exception {

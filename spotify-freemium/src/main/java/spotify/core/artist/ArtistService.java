@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import lombok.RequiredArgsConstructor;
 import spotify.core.artist.repo.ArtistEntity;
@@ -20,8 +18,7 @@ public class ArtistService {
 
     private final ToArtistEntityMapper artistEntityMapper;
 
-    @PostMapping
-    public void addArtists(@RequestBody final List<Artist> artists) {
+    public void addArtists(final List<Artist> artists) {
         final List<ArtistEntity> artistEntities = artists
                 .stream()
                 .map(artistEntityMapper::map)
@@ -30,4 +27,7 @@ public class ArtistService {
         artistRepository.saveAll(artistEntities);
     }
 
+    public void deleteArtist(final Integer id) {
+        artistRepository.deleteById(id);
+    }
 }
