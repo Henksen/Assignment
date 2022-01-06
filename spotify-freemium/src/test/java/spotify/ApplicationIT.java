@@ -36,11 +36,12 @@ class ApplicationIT {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private final int ARTIST_ID = 88288;
 
     @Test
     void when_create_artists_expect_200() throws Exception{
         final CreateArtistsRequestModel createArtistsRequestModel = CreateArtistsRequestModel.builder()
-                .artists(List.of(createArtist(23)))
+                .artists(List.of(createArtist(ARTIST_ID)))
                 .build();
 
         sendPostRequest(createArtistsRequestModel, "/api/artists")
@@ -51,7 +52,7 @@ class ApplicationIT {
     @Test
     void when_delete_artist_expect_200() throws Exception{
         final DeleteArtistsRequestModel deleteArtistsRequestModel = DeleteArtistsRequestModel.builder()
-                .id(999997)
+                .id(ARTIST_ID)
                 .build();
 
         sendDeleteRequest(deleteArtistsRequestModel, "/api/artists")
