@@ -1,4 +1,4 @@
-package spotify.core.artist.repo.mapper;
+package spotify.core.artist.mapper;
 
 import org.springframework.stereotype.Component;
 

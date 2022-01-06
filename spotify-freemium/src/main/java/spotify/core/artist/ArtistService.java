@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import spotify.core.artist.repo.ArtistEntity;
 import spotify.core.artist.repo.ArtistRepository;
-import spotify.core.artist.repo.mapper.ToArtistEntityMapper;
+import spotify.core.artist.mapper.ToArtistEntityMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +23,12 @@ public class ArtistService {
                 .stream()
                 .map(artistEntityMapper::map)
                 .collect(Collectors.toList());
-
         artistRepository.saveAll(artistEntities);
     }
 
     public void deleteArtist(final Integer id) {
-        artistRepository.deleteById(id);
+        if(artistRepository.existsById(id)) {
+            artistRepository.deleteById(id);
+        }
     }
 }
