@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: spotify-freemium
+
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+---
+
+spring:
+  profiles: no-cloud
+  cloud:
+    config:
+      enabled: false
