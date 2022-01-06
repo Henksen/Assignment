@@ -3,8 +3,8 @@ package spotify.core.artist.mapper;
 import org.springframework.stereotype.Component;
 
 import spotify.core.artist.Artist;
-import spotify.core.common.Mapper;
 import spotify.core.artist.repo.ArtistEntity;
+import spotify.core.common.Mapper;
 
 @Component
 public class ToArtistEntityMapper implements Mapper<Artist, ArtistEntity> {

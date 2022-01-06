@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import spotify.core.artist.mapper.ToArtistEntityMapper;
 import spotify.core.artist.repo.ArtistRepository;
+import spotify.core.artist.mapper.ToArtistEntityMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -16,13 +16,13 @@ public class ArtistService {
 
     private final ArtistRepository artistRepository;
 
-    private final ToArtistEntityMapper artistEntityMapper;
+    private final ToArtistEntityMapper toArtistEntityMapper;
 
     public void addArtists(final List<Artist> artists) {
         artists.forEach(artist -> {
                     if(!artistRepository.existsById(artist.getId())) {
                         log.info("Saving artist {} with id {}", artist.getName(), artist.getId());
-                        artistRepository.save(artistEntityMapper.map(artist));
+                        artistRepository.save(toArtistEntityMapper.map(artist));
                     }
                 });
     }

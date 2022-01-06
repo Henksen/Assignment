@@ -23,7 +23,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import spotify.api.artist.model.CreateArtistsRequestModel;
 import spotify.api.artist.model.DeleteArtistsRequestModel;
+import spotify.api.song.model.CreateSongRequestModel;
 import spotify.core.artist.Artist;
+import spotify.core.song.Song;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
@@ -36,35 +38,62 @@ class ApplicationIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private final int ARTIST_ID = 88288;
+    private final int ARTIST_ID = 88999999;
+    private final int SONG_ID = 88999999;
+
 
     @Test
     void when_create_artists_expect_200() throws Exception{
-        final CreateArtistsRequestModel createArtistsRequestModel = CreateArtistsRequestModel.builder()
+        final CreateArtistsRequestModel request = CreateArtistsRequestModel.builder()
                 .artists(List.of(createArtist(ARTIST_ID)))
                 .build();
 
-        sendPostRequest(createArtistsRequestModel, "/api/artists")
+        sendPostRequest(request, "/api/artists")
                 .andExpect(status().isOk())
                 .andReturn();
     }
 
     @Test
     void when_delete_artist_expect_200() throws Exception{
-        final DeleteArtistsRequestModel deleteArtistsRequestModel = DeleteArtistsRequestModel.builder()
+        final DeleteArtistsRequestModel request = DeleteArtistsRequestModel.builder()
                 .id(ARTIST_ID)
                 .build();
 
-        sendDeleteRequest(deleteArtistsRequestModel, "/api/artists")
+        sendDeleteRequest(request, "/api/artists")
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+    @Test
+    void when_create_song_expect_200() throws Exception{
+        final CreateSongRequestModel request = CreateSongRequestModel.builder()
+                .songs(List.of(buildSong()))
+                .build();
+
+        sendDeleteRequest(request, "/api/songs")
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    private Song buildSong() {
+        return Song.builder()
+                .id(SONG_ID)
+                .name("twinkle twinkle")
+                .year(1999)
+                .album("granny")
+                .shortName("tw")
+                .bpm(200)
+                .duration(30)
+                .genre("child songs")
+                .album("starry night")
+                .build();
     }
 
     private Artist createArtist(final int id) {
         return Artist.builder().id(id).name("testName" + id).build();
     }
 
-    private ResultActions sendDeleteRequest(final DeleteArtistsRequestModel request, final String url) throws Exception {
+    private ResultActions sendDeleteRequest(final Object request, final String url) throws Exception {
         return sendRequest(delete(url), toJson(objectMapper, request), new HttpHeaders());
     }
 
