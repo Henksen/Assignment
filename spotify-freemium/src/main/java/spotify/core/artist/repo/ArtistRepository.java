@@ -1,4 +1,4 @@
-package spotify.core.repo;
+package spotify.core.artist.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

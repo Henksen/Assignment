@@ -1,4 +1,4 @@
-package spotify.core.repo;
+package spotify.core.artist.repo;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;

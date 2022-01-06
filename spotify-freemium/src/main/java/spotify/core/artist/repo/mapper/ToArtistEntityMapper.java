@@ -1,10 +1,10 @@
-package spotify.core.repo.mapper;
+package spotify.core.artist.repo.mapper;
 
 import org.springframework.stereotype.Component;
 
 import spotify.core.artist.Artist;
 import spotify.core.common.Mapper;
-import spotify.core.repo.ArtistEntity;
+import spotify.core.artist.repo.ArtistEntity;
 
 @Component
 public class ToArtistEntityMapper implements Mapper<Artist, ArtistEntity> {
