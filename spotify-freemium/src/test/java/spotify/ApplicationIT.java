@@ -1,9 +1,12 @@
 package spotify;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static spotify.ObjectMapperUtil.fromJson;
 
 import java.util.List;
 
@@ -15,15 +18,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import spotify.api.artist.model.CreateArtistsRequestModel;
 import spotify.api.artist.model.DeleteArtistsRequestModel;
-import spotify.api.song.model.CreateSongRequestModel;
 import spotify.api.song.model.DeleteSongRequestModel;
 import spotify.core.artist.Artist;
 import spotify.core.song.Song;
@@ -42,16 +44,24 @@ class ApplicationIT {
     private final int ARTIST_ID = 88999999;
     private final int SONG_ID = 88999999;
 
-
     @Test
     void when_create_artists_expect_200() throws Exception{
-        final CreateArtistsRequestModel request = CreateArtistsRequestModel.builder()
-                .artists(List.of(createArtist(ARTIST_ID)))
-                .build();
+        final List<Artist> request = List.of(createArtist(ARTIST_ID));
 
         sendPostRequest(request, "/api/artists")
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+    @Test
+    void when_get_artist_expect_artist() throws Exception{
+        final MvcResult result = sendGetRequest("/api/artists/" + ARTIST_ID)
+                .andExpect(status().isOk())
+                .andReturn();
+
+        final Artist artist = fromJson(result, objectMapper, Artist.class);
+        assertThat(artist.getId()).isEqualTo(ARTIST_ID);
+        assertThat(artist.getName()).isEqualTo("testName" + ARTIST_ID);
     }
 
     @Test
@@ -67,9 +77,7 @@ class ApplicationIT {
 
     @Test
     void when_create_song_expect_200() throws Exception{
-        final CreateSongRequestModel request = CreateSongRequestModel.builder()
-                .songs(List.of(buildSong()))
-                .build();
+        final List<Song> request = List.of(buildSong());
 
         sendPostRequest(request, "/api/songs")
                 .andExpect(status().isOk())
@@ -103,6 +111,10 @@ class ApplicationIT {
 
     private Artist createArtist(final int id) {
         return Artist.builder().id(id).name("testName" + id).build();
+    }
+
+    private ResultActions sendGetRequest(final String url) throws Exception {
+        return mvc.perform(get(url).headers(new HttpHeaders()));
     }
 
     private ResultActions sendDeleteRequest(final Object request, final String url) throws Exception {
