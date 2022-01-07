@@ -1,5 +1,6 @@
 package spotify.core.artist;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
@@ -92,9 +93,11 @@ class ArtistServiceTest {
     void when_get_artist_by_id_expect_artist_is_mapped() {
         final Integer artistId = 500;
         final ArtistEntity artistEntity = new ArtistEntity();
-
+        final Artist artist = Artist.builder().build();
         when(repository.findById(artistId)).thenReturn(Optional.of(artistEntity));
-        verify(fromArtistEntityMapper).map(artistEntity);
+        when(fromArtistEntityMapper.map(artistEntity)).thenReturn(artist);
+
+        assertThat(sut.getArtist(artistId)).isEqualTo(artist);
     }
 
     @Test
@@ -102,6 +105,6 @@ class ArtistServiceTest {
         final Integer artistId = 500;
         when(repository.findById(artistId)).thenReturn(Optional.empty());
 
-        assertThrows(ArtistNotFoundException.class, () -> sut.deleteArtist(artistId));
+        assertThrows(ArtistNotFoundException.class, () -> sut.getArtist(artistId));
     }
 }
