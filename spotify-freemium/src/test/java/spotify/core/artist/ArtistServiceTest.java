@@ -1,11 +1,13 @@
 package spotify.core.artist;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import spotify.core.artist.mapper.FromArtistEntityMapper;
 import spotify.core.artist.mapper.ToArtistEntityMapper;
 import spotify.core.artist.repo.ArtistEntity;
 import spotify.core.artist.repo.ArtistRepository;
@@ -25,6 +28,9 @@ class ArtistServiceTest {
 
     @Mock
     private ToArtistEntityMapper toArtistEntityMapper;
+
+    @Mock
+    private FromArtistEntityMapper fromArtistEntityMapper;
 
     @InjectMocks
     private ArtistService sut;
@@ -85,20 +91,17 @@ class ArtistServiceTest {
     @Test
     void when_get_artist_by_id_expect_artist_is_mapped() {
         final Integer artistId = 500;
-        when(repository.existsById(artistId)).thenReturn(false);
+        final ArtistEntity artistEntity = new ArtistEntity();
 
-        sut.deleteArtist(artistId);
-
-        verify(repository, never()).deleteById(artistId);
+        when(repository.findById(artistId)).thenReturn(Optional.of(artistEntity));
+        verify(fromArtistEntityMapper).map(artistEntity);
     }
 
     @Test
     void when_get_artist_by_non_existing_id_expect_exception_is_thrown() {
         final Integer artistId = 500;
-        when(repository.existsById(artistId)).thenReturn(false);
+        when(repository.findById(artistId)).thenReturn(Optional.empty());
 
-        sut.deleteArtist(artistId);
-
-        verify(repository, never()).deleteById(artistId);
+        assertThrows(ArtistNotFoundException.class, () -> sut.deleteArtist(artistId));
     }
 }
