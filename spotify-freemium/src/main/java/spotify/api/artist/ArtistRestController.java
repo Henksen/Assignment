@@ -1,5 +1,7 @@
 package spotify.api.artist;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +24,8 @@ public class ArtistRestController {
     private final ArtistService artistService;
 
     @PostMapping
-    public void addArtist(@RequestBody final CreateArtistsRequestModel request) {
-        artistService.addArtists(request.getArtists());
+    public void addArtist(@RequestBody final List<Artist> request) {
+        artistService.addArtists(request);
     }
 
     @DeleteMapping
