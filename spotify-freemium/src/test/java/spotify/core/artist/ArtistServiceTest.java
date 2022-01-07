@@ -1,11 +1,7 @@
 package spotify.core.artist;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,11 +58,7 @@ class ArtistServiceTest {
 
         sut.addArtists(artists);
 
-        verify(repository).existsById(artistEntity1.getId());
-        verify(repository).existsById(artistEntity2.getId());
-
         verify(repository).save(artistEntity1);
+        verify(repository, never()).save(artistEntity2);
     }
-
-
 }
