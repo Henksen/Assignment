@@ -16,6 +16,4 @@
 After a nights sleep I decided I want different priorities. 
 1. I want unit tests to show I can make unit tests and to make it future proof. 
 2. I want the get functionality working so I can test with postman
-Also, I decided on no repository IT, but just applicationIT. 
-
-.
+Also, I decided on no repository IT, but just applicationIT.
