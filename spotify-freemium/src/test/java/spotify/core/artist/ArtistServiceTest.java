@@ -30,7 +30,7 @@ class ArtistServiceTest {
     private ArtistService sut;
 
     @Test
-    void when_add_artists_only_not_existing_artist_persisted() {
+    void when_add_artists_expect_only_not_existing_artist_persisted() {
         final Artist artist1 = Artist.builder()
                 .name("artist_1")
                 .id(1)
@@ -42,11 +42,11 @@ class ArtistServiceTest {
 
         final List<Artist> artists = List.of(artist1, artist2);
 
-        ArtistEntity artistEntity1 = new ArtistEntity();
+        final ArtistEntity artistEntity1 = new ArtistEntity();
         artistEntity1.setId(1);
         artistEntity1.setName("artist_1");
 
-        ArtistEntity artistEntity2 = new ArtistEntity();
+        final ArtistEntity artistEntity2 = new ArtistEntity();
         artistEntity1.setId(2);
         artistEntity1.setName("artist_2");
 
@@ -60,5 +60,25 @@ class ArtistServiceTest {
 
         verify(repository).save(artistEntity1);
         verify(repository, never()).save(artistEntity2);
+    }
+
+    @Test
+    void when_delete_existing_artist_expect_deleted_from_repo() {
+        final Integer artistId = 500;
+        when(repository.existsById(artistId)).thenReturn(true);
+
+        sut.deleteArtist(artistId);
+
+        verify(repository).deleteById(artistId);
+    }
+
+    @Test
+    void when_delete_non_existing_artist_expect_not_deleted_from_repo() {
+        final Integer artistId = 500;
+        when(repository.existsById(artistId)).thenReturn(false);
+
+        sut.deleteArtist(artistId);
+
+        verify(repository, never()).deleteById(artistId);
     }
 }
