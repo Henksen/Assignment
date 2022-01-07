@@ -1,6 +1,6 @@
 package spotify.api.configuration;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +13,7 @@ import spotify.core.artist.ArtistNotFoundException;
 @ControllerAdvice
 public class RestControllerExceptionHandler {
 
-    @ResponseStatus(BAD_REQUEST)
+    @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(ArtistNotFoundException.class)
     public void artistNotFoundException(final ArtistNotFoundException e) {
         logWarn(e);
