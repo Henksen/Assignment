@@ -27,4 +27,9 @@ public class ArtistRestController {
     public void deleteArtist(@RequestBody final DeleteArtistsRequestModel request) {
         artistService.deleteArtist(request.getId());
     }
+
+    @GetMappping("/{artistId}")
+    public Artist getArtist(@PathVariable final Integer artistId) {
+        artistService.getArtist(request.getId());
+    }
 }

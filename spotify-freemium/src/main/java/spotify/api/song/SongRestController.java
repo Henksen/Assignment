@@ -1,6 +1,8 @@
 package spotify.api.song;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import spotify.api.song.model.CreateSongRequestModel;
 import spotify.api.song.model.DeleteSongRequestModel;
+import spotify.core.artist.Artist;
 import spotify.core.song.SongService;
 
 @RestController
@@ -24,7 +27,8 @@ public class SongRestController {
     }
 
     @DeleteMapping
-    public void deleteArtist(@RequestBody final DeleteSongRequestModel request) {
+    public void deleteSong(@RequestBody final DeleteSongRequestModel request) {
         songService.deleteSong(request.getId());
     }
+
 }
