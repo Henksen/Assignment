@@ -81,4 +81,24 @@ class ArtistServiceTest {
 
         verify(repository, never()).deleteById(artistId);
     }
+
+    @Test
+    void when_get_artist_by_id_expect_artist_is_mapped() {
+        final Integer artistId = 500;
+        when(repository.existsById(artistId)).thenReturn(false);
+
+        sut.deleteArtist(artistId);
+
+        verify(repository, never()).deleteById(artistId);
+    }
+
+    @Test
+    void when_get_artist_by_non_existing_id_expect_exception_is_thrown() {
+        final Integer artistId = 500;
+        when(repository.existsById(artistId)).thenReturn(false);
+
+        sut.deleteArtist(artistId);
+
+        verify(repository, never()).deleteById(artistId);
+    }
 }

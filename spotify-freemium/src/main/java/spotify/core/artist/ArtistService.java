@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import spotify.core.artist.mapper.FromArtistEntityMapper;
 import spotify.core.artist.repo.ArtistRepository;
 import spotify.core.artist.mapper.ToArtistEntityMapper;
 
@@ -17,6 +18,8 @@ public class ArtistService {
     private final ArtistRepository artistRepository;
 
     private final ToArtistEntityMapper toArtistEntityMapper;
+
+    private final FromArtistEntityMapper fromArtistEntityMapper;
 
     public void addArtists(final List<Artist> artists) {
         artists.forEach(artist -> {
@@ -32,5 +35,11 @@ public class ArtistService {
             log.info("Deleting with id {}", id);
             artistRepository.deleteById(id);
         }
+    }
+
+    public Artist getArtist(final Integer id) {
+        return artistRepository.findById(id)
+                .map(fromArtistEntityMapper::map)
+                .orElseThrow(() -> new ArtistNotFoundException("No artist found with id: " + id));
     }
 }
